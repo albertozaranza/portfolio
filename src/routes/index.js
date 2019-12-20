@@ -2,10 +2,8 @@ import React from 'react';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-// import { Container } from './styles';
-
-import About from '../components/About';
-import Home from '../components/Home';
+import Home from '~/pages/Home';
+import About from '~/pages/About';
 
 export default function Routes() {
   return (
