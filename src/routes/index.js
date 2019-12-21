@@ -7,7 +7,7 @@ import About from '~/pages/About';
 
 export default function Routes() {
   return (
-    <BrowserRouter basename="/portfolio">
+    <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
