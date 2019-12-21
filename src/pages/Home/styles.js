@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import background from '~/assets/background.jpg';
+
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -14,7 +16,7 @@ export const Header = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  background-image: url('https://picsum.photos/1000');
+  background-image: url(${background});
   background-size: cover;
   background-position: top;
 
@@ -49,14 +51,12 @@ export const Header = styled.div`
     text-align: center;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     position: static;
 
     width: 100%;
     height: 100%;
-  }
 
-  @media (max-width: 767px) {
     h1 {
       letter-spacing: 0;
     }
@@ -90,18 +90,18 @@ export const Info = styled.div`
   align-items: center;
 
   background-color: rgba(333, 333, 333, 0.8);
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 1rem;
+  padding: 2rem;
 
-  margin-top: 100px;
+  margin-top: 10rem;
 
   img {
-    height: 150px;
-    width: 150px;
+    height: 15rem;
+    width: 15rem;
 
-    border-radius: 100px;
+    border-radius: 10rem;
 
-    margin-bottom: 8px;
+    margin-bottom: 0.8rem;
   }
 `;
 
@@ -112,29 +112,33 @@ export const Social = styled.div`
   align-items: center;
 
   background-color: rgba(333, 333, 333, 0.8);
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 1rem;
+  padding: 2rem;
 
   span {
     font-size: 1.2rem;
   }
 
   a {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
 
     position: relative;
-    top: 5px;
+    top: 0.5rem;
 
     img {
-      height: 30px;
+      height: 3rem;
     }
 
     &:not(:last-child) {
-      margin-right: 30px;
+      margin-right: 3rem;
     }
   }
 
   @media (max-width: 1200px) {
+    flex-direction: column-reverse;
+  }
+
+  @media (max-width: 767px) {
     display: none;
   }
 `;
