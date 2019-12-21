@@ -36,6 +36,7 @@ export default createGlobalStyle`
   }
 
   button {
+    border: none;
     cursor: pointer;
   }
 `;

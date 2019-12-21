@@ -147,3 +147,39 @@ export const Links = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
+export const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  margin-left: 33.333333%;
+  padding: 5rem;
+
+  font-size: 1.8rem;
+  color: #777;
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+`;
+
+export const SeeMore = styled.button`
+  width: 10rem;
+
+  padding: 1rem;
+  margin-top: 2rem;
+
+  border-radius: 6px;
+
+  font-size: 1.4rem;
+
+  background-color: orange;
+  color: #fff;
+  transition: all 0.5s;
+
+  &:hover {
+    background-color: #fff;
+    color: orange;
+    border: 1px solid orange;
+  }
+`;
