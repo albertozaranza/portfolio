@@ -157,9 +157,14 @@ export const Main = styled.div`
 
   font-size: 1.8rem;
   color: #777;
+  text-align: justify;
 
   h2 {
     margin-bottom: 2rem;
+  }
+
+  @media (max-width: 767px) {
+    margin-left: 0;
   }
 `;
 
