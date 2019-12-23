@@ -49,6 +49,7 @@ export default function Home() {
         <Link to="/about">
           <SeeMore>Ver mais</SeeMore>
         </Link>
+        <h1>[Em construção...]</h1>
       </Main>
     </Container>
   );

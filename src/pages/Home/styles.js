@@ -159,6 +159,10 @@ export const Main = styled.div`
   color: #777;
   text-align: justify;
 
+  h1 {
+    margin-top: 3rem;
+  }
+
   h2 {
     margin-bottom: 2rem;
   }
