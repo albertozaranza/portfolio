@@ -153,9 +153,9 @@ export const Main = styled.div`
   flex-direction: column;
 
   margin-left: 33.333333%;
-  padding: 5rem;
+  padding: 3rem 5rem;
 
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   color: #777;
   text-align: justify;
 
@@ -164,6 +164,7 @@ export const Main = styled.div`
   }
 
   h2 {
+    margin-top: 2rem;
     margin-bottom: 2rem;
   }
 
@@ -184,6 +185,7 @@ export const SeeMore = styled.button`
 
   background-color: orange;
   color: #fff;
+  border: 1px solid white;
   transition: all 0.5s;
 
   &:hover {

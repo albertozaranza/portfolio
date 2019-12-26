@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
+import Jobs from '~/components/Jobs';
+
 import githubLogo from '~/assets/github-logo.svg';
 import linkedinLogo from '~/assets/linkedin-logo.svg';
 import avatar from '~/assets/avatar.jpg';
@@ -40,15 +42,20 @@ export default function Home() {
       </Header>
       <Main>
         <h2>Um pouco mais sobre mim:</h2>
-        ⠀⠀Sou desenvolvedor Front-End com experiência em React Native, ReactJS e
-        NodeJS. Atualmente estou cursando Ciência da Computação no Instituto
-        Federal de Educação, Ciência e Tecnologia do Ceará (IFCE), onde
-        trabalhei por dois anos como Bolsista de Iniciação Científica sendo
-        desenvolvedor mobile. Além disso, domino o nível de inglês
-        intermediário.
+        <p>
+          ⠀⠀Sou desenvolvedor Front-End com experiência em <b>React Native</b>,{' '}
+          <b>ReactJS</b> e <b>NodeJS</b>. Atualmente estou cursando{' '}
+          <b>Ciência da Computação</b> no Instituto Federal de Educação, Ciência
+          e Tecnologia do Ceará (IFCE), onde trabalhei por <b>dois anos</b> como
+          Bolsista de Iniciação Científica sendo <b>desenvolvedor mobile</b>.
+          Além disso, domino o nível de <b>inglês intermediário</b>.
+        </p>
+
         <Link to="/about">
           <SeeMore>Ver mais</SeeMore>
         </Link>
+        <h2>Trabalhos recentes</h2>
+        <Jobs />
         <h1>[Em construção...]</h1>
       </Main>
     </Container>
