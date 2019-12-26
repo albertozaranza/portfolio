@@ -51,7 +51,7 @@ export const Header = styled.div`
     text-align: center;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     position: static;
 
     width: 100%;
@@ -102,6 +102,10 @@ export const Info = styled.div`
     border-radius: 10rem;
 
     margin-bottom: 0.8rem;
+  }
+
+  @media (max-width: 767px) {
+    margin-top: 0;
   }
 `;
 
@@ -155,6 +159,8 @@ export const Main = styled.div`
   margin-left: 33.333333%;
   padding: 3rem 5rem;
 
+  background-color: #eee;
+
   font-size: 1.7rem;
   color: #777;
   text-align: justify;
@@ -170,6 +176,10 @@ export const Main = styled.div`
 
   @media (max-width: 767px) {
     margin-left: 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 2rem;
   }
 `;
 

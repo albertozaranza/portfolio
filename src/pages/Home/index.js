@@ -56,7 +56,6 @@ export default function Home() {
         </Link>
         <h2>Trabalhos recentes</h2>
         <Jobs />
-        <h1>[Em construção...]</h1>
       </Main>
     </Container>
   );
