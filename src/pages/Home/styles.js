@@ -194,12 +194,12 @@ export const SeeMore = styled.button`
   font-size: 1.4rem;
 
   background-color: orange;
-  color: #fff;
+  color: #eee;
   border: 1px solid white;
   transition: all 0.5s;
 
   &:hover {
-    background-color: #fff;
+    background-color: #eee;
     color: orange;
     border: 1px solid orange;
   }
