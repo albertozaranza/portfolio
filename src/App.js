@@ -1,16 +1,19 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
-
-import Routes from '~/routes';
-import history from './services/history';
 
 import GlobalStyle from './styles/global';
 
-export default function BasicExample() {
+export default function App() {
   return (
-    <Router history={history}>
-      <Routes />
+    <div
+      style={{
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <GlobalStyle />
-    </Router>
+      <h1>Página em manutenção</h1>
+    </div>
   );
 }
