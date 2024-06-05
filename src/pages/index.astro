@@ -8,15 +8,15 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     <div class="text-xl py-1">Hey, there 👋</div>
     <div class="text-5xl font-bold">I'm Alberto Zaranza</div>
     <div class="py-3">
-      <div class="text-3xl font-bold">Mobile Software Engineer 📱</div>
-      <div class="text-xl font-bold">React Native Specialist ⚛</div>
+      <div class="text-3xl font-bold">Software Engineer 🧑‍💻</div>
+      <div class="text-xl font-bold">React, React Native and Node ⚛</div>
     </div>
     <div class="py-2">
       <text class="text-lg">
-        As a Mobile Software Engineer, I specialize in React Native, a
-        technology that enables me to create high-quality mobile applications
-        for different platforms. I am passionate about creating solutions that
-        make a positive impact on people's lives and the environment.
+        As a Software Engineer, I specialize in React, React Native and Node,
+        technologies that enables me to create high-quality applications for
+        different platforms. I am passionate about creating solutions that make
+        a positive impact on people's lives and the environment.
       </text>
     </div>
     <div class="mt-8">
@@ -35,11 +35,18 @@ import HorizontalCard from "../components/HorizontalCard.astro";
   </div>
 
   <HorizontalCard
+    title="ContactApp 📱"
+    img="/portfolio/contact-app.webp"
+    desc="ContactApp is a mobile application that allows users to manage their contacts. The app is built with React Native and uses Firebase as a backend. It has features like adding and chat with contacts, as well as searching for contacts."
+    url="https://github.com/albertozaranza/contact-app-expo"
+    badge="NEW"
+  />
+  <div class="divider my-0"></div>
+  <HorizontalCard
     title="Coding Aracati 💻"
     img="/portfolio/coding-aracati.webp"
     desc="Coding Aracati community is a close-knit group of technology enthusiasts committed to learning, collaborating, and innovating. Made up of programmers from all areas, the group holds workshops and educational events to share knowledge and promote continuous learning."
     url="https://codingaracati.github.io/landing-page"
-    badge="NEW"
   />
   <div class="divider my-0"></div>
   <HorizontalCard
@@ -47,12 +54,5 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     img="/portfolio/post_img.webp"
     desc="Welcome to my programming portfolio! Browse through my projects and discover my talent and experience in software development. I hope you find something inspiring!"
     url="#"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Zarp 🚗"
-    img="/portfolio/zarp.webp"
-    desc="Zarp Localiza is a platform that offers car rental plans specifically designed for ride-sharing drivers (such as Uber drivers) in Brazil."
-    url="https://play.google.com/store/apps/details?id=com.localiza.zarp&hl=pt_BR&gl=US"
   />
 </BaseLayout>
