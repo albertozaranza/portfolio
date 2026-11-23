@@ -1,0 +1,399 @@
+---
+import type { CaseStudy } from "../data/profile";
+
+export type CaseLayout = "feature" | "wide" | "inverse" | "split";
+
+interface Props {
+  data: CaseStudy;
+  index: number;
+  layout: CaseLayout;
+}
+
+const { data, index, layout } = Astro.props;
+const n = String(index + 1).padStart(2, "0");
+const titleId = `case-${data.id}`;
+---
+
+<article class:list={["case", `case--${layout}`]} aria-labelledby={titleId} data-reveal-group>
+  <header class="case__head" data-reveal>
+    <p class="case__meta label">
+      <span class="case__n">Case {n}</span>
+      <span>{data.company}</span>
+      <span>{data.period}</span>
+    </p>
+    <h3 class="case__title" id={titleId}>{data.title}</h3>
+    <p class="case__lede serif">{data.lede}</p>
+  </header>
+
+  <div class="case__visual" data-reveal style="--d:1">
+    <slot />
+    {
+      data.media && (
+        <div class="case__media">
+          {data.media.map((m) => (
+            <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <div class="case__body">
+    <dl class="case__facts" data-reveal style="--d:1">
+      <div>
+        <dt class="label">Contexto</dt>
+        <dd>{data.context}</dd>
+      </div>
+      <div>
+        <dt class="label">Problema</dt>
+        <dd>{data.problem}</dd>
+      </div>
+      <div>
+        <dt class="label">Meu papel</dt>
+        <dd>{data.role}</dd>
+      </div>
+    </dl>
+
+    <div class="case__decisions" data-reveal style="--d:2">
+      <p class="label">Decisões</p>
+      <ol>
+        {data.decisions.map((d) => <li>{d}</li>)}
+      </ol>
+    </div>
+
+    <div class="case__outcome" data-reveal style="--d:3">
+      <p class="label">Resultado</p>
+      {
+        data.metric && (
+          <p class="case__metric">
+            <span>{data.metric.value}</span>
+            <span class="label">{data.metric.label}</span>
+          </p>
+        )
+      }
+      <p class="case__outcome-text">{data.outcome}</p>
+      <p class="case__stack">
+        <span class="sr-only">Tecnologias: </span>
+        {data.stack.map((s) => <span>{s}</span>)}
+      </p>
+      {
+        data.links && (
+          <p class="case__links">
+            {data.links.map((l) => (
+              <a class="link-draw" href={l.href} target={l.external ? "_blank" : undefined} rel={l.external ? "noopener noreferrer" : undefined}>
+                {l.label} ↗
+              </a>
+            ))}
+          </p>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .case {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(12px, 2vw, 32px);
+    row-gap: clamp(32px, 4vw, 56px);
+    padding-block: clamp(56px, 8vw, 120px);
+    border-top: 1px solid var(--line);
+  }
+
+  /* Shared pieces ---------------------------------------------------------- */
+  .case__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-bottom: 18px;
+  }
+
+  .case__n {
+    color: var(--signal-ink);
+  }
+
+  .case__title {
+    font-size: var(--step-3);
+    letter-spacing: -0.045em;
+    max-width: 16ch;
+  }
+
+  .case__lede {
+    margin-top: 14px;
+    font-size: var(--step-2);
+    line-height: 1.15;
+    color: var(--ink-2);
+    max-width: 24ch;
+  }
+
+  .case__body {
+    display: grid;
+    gap: 36px;
+    align-content: start;
+  }
+
+  .case__facts {
+    display: grid;
+    gap: 20px;
+  }
+
+  .case__facts div {
+    display: grid;
+    grid-template-columns: 7.5em 1fr;
+    gap: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .case__facts dt {
+    padding-top: 0.3em;
+  }
+
+  .case__facts dd {
+    color: var(--ink-2);
+  }
+
+  .case__decisions ol {
+    counter-reset: d;
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .case__decisions li {
+    counter-increment: d;
+    display: grid;
+    grid-template-columns: 2.2em 1fr;
+    gap: 8px;
+    font-size: 1.02rem;
+    line-height: 1.45;
+  }
+
+  .case__decisions li::before {
+    content: counter(d, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding-top: 0.35em;
+    color: var(--signal-ink);
+  }
+
+  .case__outcome {
+    display: grid;
+    gap: 12px;
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--paper-2);
+  }
+
+  .case__metric {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 14px;
+  }
+
+  .case__metric span:first-child {
+    font-size: var(--step-3);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+
+  .case__outcome-text {
+    font-size: 1.02rem;
+  }
+
+  .case__stack {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.4;
+    margin-top: 6px;
+  }
+
+  .case__stack span:not(.sr-only) {
+    padding: 4px 10px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-2);
+  }
+
+  .case__media {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .case__media img {
+    border-radius: var(--radius);
+  }
+
+  .case__links {
+    display: flex;
+    gap: 20px;
+  }
+
+  /* Layout: feature (device left, story right) ----------------------------- */
+  .case--feature .case__head {
+    grid-column: 1 / span 7;
+  }
+
+  .case--feature .case__visual {
+    grid-column: 1 / span 5;
+    grid-row: 2;
+    align-self: start;
+    position: sticky;
+    top: 100px;
+  }
+
+  .case--feature .case__body {
+    grid-column: 7 / span 6;
+    grid-row: 2;
+  }
+
+  /* Layout: wide (full-width diagram, three columns of text) --------------- */
+  .case--wide .case__head {
+    grid-column: 4 / span 9;
+  }
+
+  .case--wide .case__visual {
+    grid-column: 1 / -1;
+  }
+
+  .case--wide .case__body {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(16px, 3vw, 48px);
+  }
+
+  .case--wide .case__facts div {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  /* Layout: inverse (dark panel) ------------------------------------------ */
+  .case--inverse {
+    --panel: #121212;
+    --panel-fg: #edebe6;
+    position: relative;
+    border-top: 0;
+    padding: clamp(28px, 5vw, 72px);
+    margin-block: clamp(24px, 4vw, 48px);
+    border-radius: calc(var(--radius) * 2);
+    background: var(--panel);
+    color: var(--panel-fg);
+    --ink: var(--panel-fg);
+    --ink-2: #b4b0a7;
+    --ink-3: #85827a;
+    --line: rgb(237 235 230 / 0.13);
+    --line-strong: rgb(237 235 230 / 0.3);
+    --paper-2: rgb(255 255 255 / 0.05);
+    --signal-ink: #ff7d55;
+  }
+
+  :global([data-theme="dark"]) .case--inverse {
+    --panel: #1b1b19;
+    box-shadow: inset 0 0 0 1px rgb(237 235 230 / 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .case--inverse {
+      --panel: #1b1b19;
+      box-shadow: inset 0 0 0 1px rgb(237 235 230 / 0.08);
+    }
+  }
+
+  .case--inverse .case__head {
+    grid-column: 1 / span 6;
+  }
+
+  .case--inverse .case__body {
+    grid-column: 1 / span 6;
+    grid-row: 2;
+  }
+
+  .case--inverse .case__visual {
+    grid-column: 8 / span 5;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  /* Layout: split (story left, diagram right, compact) -------------------- */
+  .case--split .case__head {
+    grid-column: 1 / span 6;
+  }
+
+  .case--split .case__visual {
+    grid-column: 7 / span 6;
+    grid-row: 1;
+    align-self: end;
+  }
+
+  .case--split .case__body {
+    grid-column: 1 / -1;
+    grid-template-columns: 5fr 4fr 3fr;
+    column-gap: clamp(16px, 3vw, 48px);
+  }
+
+  .case--split .case__facts div {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  /* Responsive ------------------------------------------------------------- */
+  @media (max-width: 1023px) {
+    .case--wide .case__body,
+    .case--split .case__body {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .case--wide .case__outcome,
+    .case--split .case__outcome {
+      grid-column: 1 / -1;
+    }
+
+    .case--wide .case__head {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .case > * {
+      grid-column: 1 / -1 !important;
+      grid-row: auto !important;
+    }
+
+    .case--feature .case__visual {
+      position: static;
+    }
+
+    .case--split .case__visual {
+      order: 2;
+    }
+
+    .case--split .case__body {
+      order: 3;
+    }
+  }
+
+  @media (max-width: 699px) {
+    .case--wide .case__body,
+    .case--split .case__body {
+      grid-template-columns: 1fr;
+    }
+
+    .case__facts div {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .case__outcome {
+      padding: 20px;
+    }
+  }
+</style>

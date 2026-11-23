@@ -1,0 +1,294 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import { disciplines } from "../data/profile";
+
+const total = String(disciplines.length).padStart(2, "0");
+---
+
+<section class="approach" id="approach" aria-labelledby="approach-title">
+  <div class="container">
+    <SectionHeader index="03" eyebrow="Abordagem" id="approach-title">
+      Como penso <span class="serif">e construo.</span>
+      <p slot="intro">
+        A interface é a parte visível. O resto é arquitetura, performance, entrega e o ciclo de feedback
+        que mostra se tudo isso funcionou.
+      </p>
+    </SectionHeader>
+
+    <!-- Desktop: tabs -->
+    <div class="tabs" data-tabs data-reveal>
+      <div class="tabs__list" role="tablist" aria-label="Disciplinas de engenharia" aria-orientation="vertical">
+        {
+          disciplines.map((d, i) => (
+            <button
+              class="tab"
+              role="tab"
+              id={`tab-${d.id}`}
+              aria-controls={`panel-${d.id}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              tabindex={i === 0 ? 0 : -1}
+              type="button"
+            >
+              <span class="tab__n label">{String(i + 1).padStart(2, "0")}</span>
+              <span class="tab__title">{d.title}</span>
+              <span class="tab__arrow" aria-hidden="true">→</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="tabs__panels">
+        {
+          disciplines.map((d, i) => (
+            <div class="panel" role="tabpanel" id={`panel-${d.id}`} aria-labelledby={`tab-${d.id}`} hidden={i !== 0} tabindex="0">
+              <p class="panel__count label">
+                <span class="signal">{String(i + 1).padStart(2, "0")}</span> / {total}
+              </p>
+              <p class="panel__principle serif">{d.principle}</p>
+              <p class="panel__body">{d.body}</p>
+              <p class="label">Na prática</p>
+              <ul class="panel__evidence">
+                {d.evidence.map((e) => <li>{e}</li>)}
+              </ul>
+              <p class="panel__tools">
+                {d.tools.map((t) => <span>{t}</span>)}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Mobile: accordion -->
+    <div class="acc">
+      {
+        disciplines.map((d, i) => (
+          <details class="acc__item" open={i === 0}>
+            <summary>
+              <span class="label">{String(i + 1).padStart(2, "0")}</span>
+              <span class="acc__title">{d.title}</span>
+              <span class="acc__icon" aria-hidden="true" />
+            </summary>
+            <div class="acc__body">
+              <p class="panel__principle serif">{d.principle}</p>
+              <p class="panel__body">{d.body}</p>
+              <p class="label">Na prática</p>
+              <ul class="panel__evidence">
+                {d.evidence.map((e) => <li>{e}</li>)}
+              </ul>
+              <p class="panel__tools">
+                {d.tools.map((t) => <span>{t}</span>)}
+              </p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .approach {
+    padding-block: var(--section-y);
+    background: var(--paper-2);
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(12px, 2vw, 32px);
+  }
+
+  .tabs__list {
+    grid-column: 1 / span 6;
+    align-self: start;
+    display: grid;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tab {
+    display: grid;
+    grid-template-columns: 3.2em 1fr auto;
+    align-items: baseline;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    text-align: left;
+    color: var(--ink-3);
+    transition: color 0.35s, padding 0.6s var(--ease-out);
+  }
+
+  .tab__title {
+    font-size: var(--step-2);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+
+  .tab__arrow {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition:
+      opacity 0.35s,
+      transform 0.6s var(--ease-out);
+    color: var(--signal);
+    font-size: 1.3rem;
+  }
+
+  .tab:hover,
+  .tab[aria-selected="true"] {
+    color: var(--ink);
+  }
+
+  .tab[aria-selected="true"] {
+    padding-left: 10px;
+  }
+
+  .tab[aria-selected="true"] .tab__n {
+    color: var(--signal-ink);
+  }
+
+  .tab[aria-selected="true"] .tab__arrow {
+    opacity: 1;
+    transform: none;
+  }
+
+  .tabs__panels {
+    grid-column: 8 / span 5;
+    position: relative;
+  }
+
+  .panel {
+    position: sticky;
+    top: 110px;
+    display: grid;
+    gap: 16px;
+    padding-top: 18px;
+    animation: panel-in 0.7s var(--ease-out);
+  }
+
+  .panel:focus-visible {
+    outline-offset: 8px;
+  }
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  .panel__principle {
+    font-size: var(--step-3);
+    line-height: 1;
+  }
+
+  .panel__body {
+    color: var(--ink-2);
+    margin-bottom: 8px;
+  }
+
+  .panel__evidence {
+    display: grid;
+    gap: 2px;
+  }
+
+  .panel__evidence li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .panel__evidence li::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin-top: 0.6em;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+
+  .panel__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+
+  .acc {
+    display: none;
+  }
+
+  @media (max-width: 899px) {
+    .tabs {
+      display: none;
+    }
+
+    .acc {
+      display: block;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .acc__item {
+      border-top: 1px solid var(--line);
+    }
+
+    .acc__item summary {
+      display: grid;
+      grid-template-columns: 2.6em 1fr auto;
+      align-items: center;
+      padding: 18px 0;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .acc__item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .acc__title {
+      font-size: var(--step-2);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+    }
+
+    .acc__icon {
+      position: relative;
+      width: 16px;
+      height: 16px;
+    }
+
+    .acc__icon::before,
+    .acc__icon::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1.5px;
+      background: currentColor;
+      transition: transform 0.5s var(--ease-out);
+    }
+
+    .acc__icon::after {
+      transform: rotate(90deg);
+    }
+
+    .acc__item[open] .acc__icon::after {
+      transform: rotate(0);
+    }
+
+    .acc__item[open] .acc__title {
+      color: var(--ink);
+    }
+
+    .acc__body {
+      display: grid;
+      gap: 14px;
+      padding: 0 0 28px;
+    }
+  }
+</style>

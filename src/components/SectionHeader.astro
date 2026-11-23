@@ -1,0 +1,81 @@
+---
+interface Props {
+  index: string;
+  eyebrow: string;
+  id: string;
+}
+
+const { index, eyebrow, id } = Astro.props;
+---
+
+<header class="sh grid-12">
+  <p class="sh__eyebrow label" data-reveal>
+    <span class="sh__index">{index}</span>
+    <span class="sh__bar" aria-hidden="true"></span>
+    {eyebrow}
+  </p>
+  <h2 class="sh__title" id={id} data-reveal style="--d:1">
+    <slot />
+  </h2>
+  {
+    Astro.slots.has("intro") && (
+      <div class="sh__intro" data-reveal style="--d:2">
+        <slot name="intro" />
+      </div>
+    )
+  }
+</header>
+
+<style>
+  .sh {
+    row-gap: 24px;
+    margin-bottom: clamp(56px, 8vw, 112px);
+  }
+
+  .sh__eyebrow {
+    grid-column: 1 / span 3;
+    align-self: start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 0.9em;
+    color: var(--ink-2);
+  }
+
+  .sh__index {
+    color: var(--signal-ink);
+  }
+
+  .sh__bar {
+    width: 28px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .sh__title {
+    grid-column: 4 / span 9;
+    font-size: var(--step-4);
+    letter-spacing: -0.05em;
+    line-height: 0.98;
+  }
+
+  .sh__title :global(.serif) {
+    letter-spacing: -0.02em;
+  }
+
+  .sh__intro {
+    grid-column: 4 / span 6;
+    color: var(--ink-2);
+    font-size: var(--step-1);
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 899px) {
+    .sh__eyebrow,
+    .sh__title,
+    .sh__intro {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

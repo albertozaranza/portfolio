@@ -1,0 +1,349 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import { metrics } from "../data/profile";
+
+const fmt = (n: number, d = 0) =>
+  n.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
+---
+
+<section class="impact" id="impact" aria-labelledby="impact-title">
+  <div class="container">
+    <SectionHeader index="01" eyebrow="Impacto" id="impact-title">
+      Resultados primeiro. <span class="serif">Stack depois.</span>
+      <p slot="intro">
+        Cada número abaixo foi entregue, monitorado e medido em produção, das decisões de produto
+        à escala em que elas rodam.
+      </p>
+    </SectionHeader>
+
+    <ol class="impact__list">
+      {
+        metrics.map((m, i) => (
+          <li class:list={["row", i % 2 === 1 && "row--flip"]} data-reveal>
+            <div class="row__aside">
+              <span class="label">{String(i + 1).padStart(2, "0")}</span>
+              <span class="label">{m.source}</span>
+            </div>
+
+            <p class="row__figure" aria-label={`${m.from !== undefined ? `de ${fmt(m.from, m.decimals)} para ` : ""}${m.prefix ?? ""}${fmt(m.to, m.decimals)}${m.suffix ?? ""} ${m.label}`}>
+              {m.from !== undefined && (
+                <span class="row__from" aria-hidden="true">
+                  {fmt(m.from, m.decimals)}
+                  <svg viewBox="0 0 40 16" aria-hidden="true">
+                    <path d="M0 8h37M30 1.5 37 8l-7 6.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+                  </svg>
+                </span>
+              )}
+              <span class="row__num" aria-hidden="true">
+                {m.prefix && <span class="row__affix">{m.prefix}</span>}
+                <span
+                  data-count
+                  data-from={m.from ?? 0}
+                  data-to={m.to}
+                  data-decimals={m.decimals ?? 0}
+                >
+                  {fmt(m.to, m.decimals)}
+                </span>
+                {m.suffix && <span class="row__affix row__affix--suffix">{m.suffix}</span>}
+              </span>
+            </p>
+
+            <div class="row__text">
+              <h3 class="row__label">{m.label}</h3>
+              <p class="row__detail">{m.detail}</p>
+
+              <div class={`viz viz--${m.id}`} aria-hidden="true">
+                {m.id === "rating" && (
+                  <div class="viz__stars">
+                    <span class="viz__stars-base">★★★★★</span>
+                    <span class="viz__stars-fill">★★★★★</span>
+                    <span class="viz__marker" style="--at:86%">4,3</span>
+                  </div>
+                )}
+                {m.id === "support" && (
+                  <div class="viz__bars">
+                    <span class="viz__bar viz__bar--ghost"><em>antes</em></span>
+                    <span class="viz__bar viz__bar--support"><em>depois</em></span>
+                  </div>
+                )}
+                {m.id === "images" && (
+                  <div class="viz__bars">
+                    <span class="viz__bar viz__bar--ghost"><em>antes</em></span>
+                    <span class="viz__bar viz__bar--images"><em>depois</em></span>
+                  </div>
+                )}
+                {m.id === "users" && (
+                  <div class="viz__dots">
+                    {Array.from({ length: 100 }, (_, k) => (
+                      <span style={`--k:${k}`} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .impact {
+    padding-block: var(--section-y);
+  }
+
+  .impact__list {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(12px, 2vw, 32px);
+    row-gap: 20px;
+    align-items: end;
+    padding-block: clamp(32px, 5vw, 64px);
+    border-top: 1px solid var(--line);
+  }
+
+  .row__aside {
+    grid-column: 1 / span 2;
+    align-self: start;
+    display: grid;
+    gap: 4px;
+  }
+
+  .row__figure {
+    grid-column: 3 / span 6;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.12em;
+    font-size: clamp(4.2rem, 1rem + 13vw, 14rem);
+    font-weight: 500;
+    line-height: 0.8;
+    letter-spacing: -0.065em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row__num {
+    display: inline-flex;
+    align-items: flex-start;
+  }
+
+  .row__affix {
+    font-size: 0.5em;
+    letter-spacing: -0.02em;
+    color: var(--signal);
+    line-height: 1;
+    margin-top: 0.12em;
+  }
+
+  .row__affix--suffix {
+    margin-left: 0.04em;
+  }
+
+  .row__from {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.18em;
+    margin-top: 0.12em;
+    font-size: 0.32em;
+    letter-spacing: -0.03em;
+    color: var(--ink-3);
+    line-height: 1;
+  }
+
+  .row__from svg {
+    width: 0.9em;
+    color: var(--signal);
+  }
+
+  .row__text {
+    grid-column: 9 / span 4;
+    display: grid;
+    gap: 12px;
+  }
+
+  .row__label {
+    font-size: var(--step-2);
+    letter-spacing: -0.035em;
+  }
+
+  .row__detail {
+    color: var(--ink-2);
+    font-size: 0.98rem;
+  }
+
+  .row--flip .row__figure {
+    grid-column: 7 / span 6;
+    grid-row: 1;
+    justify-content: flex-end;
+  }
+
+  .row--flip .row__text {
+    grid-column: 3 / span 4;
+    grid-row: 1;
+  }
+
+  .row--flip .row__aside {
+    grid-row: 1;
+  }
+
+  /* Visualizations ------------------------------------------------------- */
+  .viz {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-3);
+  }
+
+  .viz__stars {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  .viz__stars-base {
+    color: var(--line-strong);
+  }
+
+  .viz__stars-fill {
+    position: absolute;
+    inset: 0;
+    color: var(--signal);
+    clip-path: inset(0 4% 0 0);
+    transition: clip-path 1.8s var(--ease-out) 0.3s;
+  }
+
+  .js .row:not(.is-in) .viz__stars-fill {
+    clip-path: inset(0 14% 0 0);
+  }
+
+  .viz__marker {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: var(--at);
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--ink-3);
+  }
+
+  .viz__marker::before {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    width: 1px;
+    height: 6px;
+    background: currentColor;
+  }
+
+  .viz__bars {
+    display: grid;
+    gap: 6px;
+  }
+
+  .viz__bar {
+    position: relative;
+    display: block;
+    height: 18px;
+    border-radius: 3px;
+    background: var(--ink);
+    transform-origin: left;
+    transition: transform 1.6s var(--ease-out) 0.3s;
+  }
+
+  .viz__bar em {
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-style: normal;
+    white-space: nowrap;
+  }
+
+  .viz__bar--ghost {
+    width: 80%;
+    background: var(--line);
+  }
+
+  .viz__bar--support {
+    width: 32%;
+    background: var(--signal);
+  }
+
+  .js .row:not(.is-in) .viz__bar--support {
+    transform: scaleX(2.5);
+  }
+
+  /* "Up to 70% better": schematic load time, not to scale. */
+  .viz__bar--images {
+    width: 24%;
+    background: var(--signal);
+  }
+
+  .js .row:not(.is-in) .viz__bar--images {
+    transform: scaleX(3.33);
+  }
+
+  .viz__dots {
+    display: grid;
+    grid-template-columns: repeat(25, 1fr);
+    gap: 4px;
+    max-width: 260px;
+  }
+
+  .viz__dots span {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ink);
+    transition:
+      opacity 0.4s var(--ease-out),
+      transform 0.6s var(--ease-out);
+    transition-delay: calc(var(--k) * 12ms + 200ms);
+  }
+
+  .viz__dots span:nth-child(25n + 1) {
+    background: var(--signal);
+  }
+
+  .js .row:not(.is-in) .viz__dots span {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  @media (max-width: 899px) {
+    .row,
+    .row--flip {
+      grid-template-columns: 1fr;
+    }
+
+    .row__aside,
+    .row__figure,
+    .row__text,
+    .row--flip .row__figure,
+    .row--flip .row__text,
+    .row--flip .row__aside {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .row__aside {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .row--flip .row__figure {
+      justify-content: flex-start;
+    }
+
+    .row__figure {
+      font-size: clamp(4.4rem, 26vw, 9rem);
+    }
+  }
+</style>

@@ -1,0 +1,252 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import { identity, resumeFile, socials } from "../data/profile";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+// Only render the résumé link when the PDF is actually shipped in /public.
+const hasResume = fs.existsSync(path.join(process.cwd(), "public", resumeFile));
+const year = new Date().getFullYear();
+
+const links = [
+  { ...socials.linkedin, note: "Perfil e recomendações" },
+  { ...socials.github, note: "Código e projetos pessoais" },
+  ...(hasResume
+    ? [{ label: "Currículo", href: `${base}/${resumeFile}`, external: true, note: "PDF", download: true }]
+    : []),
+];
+---
+
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <p class="contact__eyebrow label" data-reveal>
+      <span class="signal">06</span> — Contato
+    </p>
+
+    <h2 class="contact__title" id="contact-title" data-reveal-group>
+      <span class="mask" style="--d:0"><span>Seu produto precisa</span></span>
+      <span class="mask" style="--d:1"><span>escalar no mobile?</span></span>
+      <span class="mask" style="--d:2"><span class="serif signal">Vamos conversar.</span></span>
+    </h2>
+
+    <div class="contact__grid">
+      <div class="contact__mail" data-reveal>
+        <p class="contact__copy">
+          Gosto de conversar com lideranças de engenharia, recrutadores e times construindo algo ambicioso.
+          {identity.availability}.
+        </p>
+        <div class="mail">
+          <a class="mail__link" href={`mailto:${identity.email}`}>
+            <span class="link-draw">{identity.email}</span>
+          </a>
+          <button class="mail__copy" type="button" data-copy={identity.email} data-copied="false">
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+              <rect x="4" y="4" width="9" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"></rect>
+              <path d="M10 2.5V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h.5" fill="none" stroke="currentColor" stroke-width="1.3"></path>
+            </svg>
+            <span data-copy-status aria-live="polite">Copiar e-mail</span>
+          </button>
+        </div>
+      </div>
+
+      <ul class="contact__links" data-reveal style="--d:1">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                download={"download" in l ? "" : undefined}
+              >
+                <span class="contact__link-label">{l.label}</span>
+                <span class="label">{l.note}</span>
+                <span class="contact__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <footer class="footer">
+      <p class="label">© {year} {identity.name}</p>
+      <p class="label">Desenhado e construído com Astro. Sem rastreadores.</p>
+      <a class="label footer__top" href="#top">Voltar ao topo ↑</a>
+    </footer>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-top: var(--section-y);
+    background: var(--ink);
+    color: var(--paper);
+    --ink-2: color-mix(in srgb, var(--paper) 72%, var(--ink));
+    --ink-3: color-mix(in srgb, var(--paper) 52%, var(--ink));
+    --line: color-mix(in srgb, var(--paper) 16%, transparent);
+    --signal-ink: var(--signal);
+    border-radius: calc(var(--radius) * 2.5) calc(var(--radius) * 2.5) 0 0;
+  }
+
+  .contact ::selection {
+    background: var(--signal);
+    color: var(--on-signal);
+  }
+
+  .contact__eyebrow {
+    color: var(--ink-3);
+  }
+
+  .contact__title {
+    margin-top: 32px;
+    font-size: clamp(2.6rem, 1rem + 7.4vw, 9.5rem);
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+  }
+
+  .contact__title .serif {
+    letter-spacing: -0.02em;
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(12px, 2vw, 32px);
+    row-gap: 48px;
+    margin-top: clamp(56px, 8vw, 112px);
+  }
+
+  .contact__mail {
+    grid-column: 1 / span 7;
+    display: grid;
+    gap: 28px;
+    align-content: start;
+  }
+
+  .contact__copy {
+    max-width: 46ch;
+    color: var(--ink-2);
+    font-size: var(--step-1);
+    line-height: 1.4;
+  }
+
+  .mail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 20px;
+  }
+
+  .mail__link {
+    font-size: clamp(1.35rem, 0.9rem + 2.2vw, 2.6rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+  }
+
+  .mail__link span {
+    background-size: 100% 1px;
+  }
+
+  .mail__link:hover {
+    color: var(--signal);
+  }
+
+  .mail__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-2);
+    transition: box-shadow 0.3s, color 0.3s, background-color 0.3s;
+  }
+
+  .mail__copy:hover {
+    color: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--ink-3);
+  }
+
+  .mail__copy[data-copied="true"] {
+    background: var(--signal);
+    color: var(--on-signal);
+    box-shadow: none;
+  }
+
+  .contact__links {
+    grid-column: 9 / span 4;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .contact__links a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 12px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    transition: padding 0.5s var(--ease-out);
+  }
+
+  .contact__link-label {
+    font-size: var(--step-2);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+
+  .contact__links .label {
+    grid-column: 1;
+  }
+
+  .contact__arrow {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    font-size: 1.4rem;
+    transition: transform 0.5s var(--ease-out), color 0.3s;
+  }
+
+  .contact__links a:hover {
+    padding-left: 10px;
+  }
+
+  .contact__links a:hover .contact__arrow {
+    transform: translate(4px, -4px);
+    color: var(--signal);
+  }
+
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin-top: clamp(80px, 12vw, 160px);
+    padding-block: 28px max(28px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+  }
+
+  .footer__top {
+    margin-left: auto;
+    color: var(--ink-2);
+  }
+
+  .footer__top:hover {
+    color: var(--signal);
+  }
+
+  @media (max-width: 899px) {
+    .contact__mail,
+    .contact__links {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .footer__top {
+      margin-left: 0;
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+/** Minimal, brand-neutral phone frame. Content goes in the default slot. */
+interface Props {
+  label?: string;
+}
+const { label } = Astro.props;
+---
+
+<figure class="device">
+  <div class="device__frame">
+    <div class="device__island" aria-hidden="true"></div>
+    <div class="device__screen">
+      <slot />
+    </div>
+  </div>
+  {label && <figcaption class="label device__caption">{label}</figcaption>}
+</figure>
+
+<style>
+  .device {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+  }
+
+  .device__frame {
+    position: relative;
+    width: min(100%, 280px);
+    aspect-ratio: 9 / 19;
+    padding: 10px;
+    border-radius: 44px;
+    background: #161615;
+    box-shadow:
+      0 0 0 1px var(--line-strong),
+      0 40px 80px -40px rgb(0 0 0 / 0.45);
+  }
+
+  .device__island {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    z-index: 2;
+    width: 30%;
+    height: 22px;
+    border-radius: 999px;
+    background: #161615;
+    transform: translateX(-50%);
+  }
+
+  .device__screen {
+    position: relative;
+    height: 100%;
+    border-radius: 34px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  .device__caption {
+    text-align: center;
+  }
+</style>

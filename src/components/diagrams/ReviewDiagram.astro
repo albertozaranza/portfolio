@@ -1,0 +1,256 @@
+---
+import Device from "./Device.astro";
+
+const steps = 6;
+---
+
+<div class="rd">
+  <Device label="Ilustrativo · não são telas reais do produto">
+    <div class="sk">
+      <div class="sk__bar"></div>
+      <div class="sk__title"></div>
+      <div class="sk__card"></div>
+      <div class="sk__row"><span></span><span></span></div>
+      <div class="sk__row"><span></span><span></span></div>
+      <div class="sk__row"><span></span><span></span></div>
+    </div>
+    <div class="sheet" role="img" aria-label="Um pedido de avaliação nativo com cinco estrelas">
+      <div class="sheet__icon"></div>
+      <p class="sheet__title">Está gostando do app?</p>
+      <p class="sheet__sub">Toque em uma estrela para avaliar.</p>
+      <p class="sheet__stars" aria-hidden="true">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+      </p>
+      <div class="sheet__actions" aria-hidden="true"><span>Agora não</span><span>Enviar</span></div>
+    </div>
+  </Device>
+
+  <div class="lanes" role="img" aria-label="Teste A/B esquemático: a variante pede a avaliação em um momento refinado da jornada.">
+    <p class="label lanes__head">A/B · em que ponto da jornada pedir</p>
+    {
+      [
+        { name: "A", tag: "controle", at: 1 },
+        { name: "B", tag: "momento refinado", at: 4 },
+      ].map((lane) => (
+        <div class:list={["lane", lane.name === "B" && "lane--b"]}>
+          <span class="lane__name">{lane.name}</span>
+          <div class="lane__track">
+            {Array.from({ length: steps }, (_, i) => (
+              <span class:list={["lane__step", i === lane.at && "is-prompt"]} />
+            ))}
+          </div>
+          <span class="label lane__tag">{lane.tag}</span>
+        </div>
+      ))
+    }
+    <p class="label lanes__axis"><span>início da jornada</span><span>→</span></p>
+  </div>
+</div>
+
+<style>
+  .rd {
+    display: grid;
+    gap: 40px;
+  }
+
+  /* Skeleton UI ---------------------------------------------------------- */
+  .sk {
+    display: grid;
+    gap: 10px;
+    padding: 52px 16px 16px;
+  }
+
+  .sk > div,
+  .sk__row span {
+    border-radius: 6px;
+    background: var(--paper-2);
+  }
+
+  .sk__bar {
+    height: 8px;
+    width: 40%;
+  }
+
+  .sk__title {
+    height: 18px;
+    width: 70%;
+  }
+
+  .sk__card {
+    height: 110px;
+    border-radius: 14px !important;
+  }
+
+  .sk .sk__row {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 10px;
+    background: none;
+  }
+
+  .sk__row span:first-child {
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .sk__row span:last-child {
+    height: 12px;
+    align-self: center;
+  }
+
+  /* Native review sheet -------------------------------------------------- */
+  .sheet {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    padding: 18px 14px 12px;
+    border-radius: 22px;
+    background: color-mix(in srgb, var(--paper) 92%, var(--ink));
+    box-shadow: 0 20px 40px -20px rgb(0 0 0 / 0.35), 0 0 0 1px var(--line);
+    text-align: center;
+    transition: transform 1s var(--ease-out) 0.4s;
+  }
+
+  :global(.js) :global(.case:not(.is-in)) .sheet {
+    transform: translateY(120%);
+  }
+
+  .sheet__icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 4px;
+    border-radius: 9px;
+    background: var(--signal);
+  }
+
+  .sheet__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .sheet__sub {
+    font-size: 0.7rem;
+    color: var(--ink-2);
+  }
+
+  .sheet__stars {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 1.15rem;
+    color: var(--signal);
+  }
+
+  .sheet__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    margin-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 0.72rem;
+  }
+
+  .sheet__actions span {
+    padding-top: 9px;
+  }
+
+  .sheet__actions span:last-child {
+    font-weight: 600;
+    border-left: 1px solid var(--line);
+  }
+
+  /* Lanes ---------------------------------------------------------------- */
+  .lanes {
+    display: grid;
+    gap: 14px;
+  }
+
+  .lanes__head {
+    margin-bottom: 4px;
+  }
+
+  .lane {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lane__name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .lane__track {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .lane__track::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .lane__step {
+    position: relative;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1.5px var(--ink-3);
+  }
+
+  .lane__step.is-prompt {
+    width: 18px;
+    height: 18px;
+    background: var(--ink-3);
+    box-shadow: none;
+  }
+
+  .lane--b .lane__step.is-prompt {
+    background: var(--signal);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--signal) 20%, transparent);
+  }
+
+  .lane__tag {
+    min-width: 9.5em;
+  }
+
+  .lane--b .lane__tag {
+    color: var(--signal-ink);
+  }
+
+  .lanes__axis {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 38px;
+    padding-right: calc(9.5em + 14px);
+  }
+
+  @media (max-width: 480px) {
+    .lane {
+      grid-template-columns: 20px 1fr;
+    }
+
+    .lane__tag {
+      grid-column: 2;
+      min-width: 0;
+    }
+
+    .lanes__axis {
+      padding-right: 0;
+      padding-left: 34px;
+    }
+  }
+</style>

@@ -1,29 +1,25 @@
 {
-  "name": "astrofy",
-  "description": "Astrofy is a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS. Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed.",
+  "name": "alberto-zaranza-portfolio",
+  "description": "Portfolio of Alberto Zaranza, Senior Mobile Engineer.",
   "type": "module",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro-check",
     "astro": "astro"
   },
   "packageManager": "pnpm@9.1.3+sha512.7c2ea089e1a6af306409c4fc8c4f0897bdac32b772016196c469d9428f1fe2d5a21daf8ad6512762654ac645b5d9136bb210ec9a00afa8dbc4677843ba362ecd",
   "dependencies": {
-    "@astrojs/mdx": "^2.0.3",
-    "@astrojs/rss": "^3.0.0",
     "@astrojs/sitemap": "^3.0.1",
-    "@astrojs/tailwind": "^5.0.3",
     "astro": "^4.0.2",
-    "daisyui": "^4.4.10",
-    "dayjs": "^1.11.9",
-    "sharp": "^0.32.6",
-    "tailwindcss": "^3.3.5"
+    "sharp": "^0.32.6"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10"
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.6.3"
   }
 }

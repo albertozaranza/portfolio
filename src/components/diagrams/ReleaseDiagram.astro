@@ -1,0 +1,111 @@
+---
+const manual = ["Preparar", "Build", "Validar", "Publicar"];
+const auto = ["Merge", "Pipeline automatizado", "Publicado"];
+---
+
+<figure class="rl" role="img" aria-label="Esquema: o release da biblioteca passou de um processo manual de vários dias para um pipeline automatizado que termina em minutos.">
+  <div class="rl__row">
+    <p class="rl__head"><span class="label">Antes</span><span class="rl__time">dias</span></p>
+    <ol class="rl__track rl__track--manual">
+      {manual.map((s) => <li>{s}</li>)}
+    </ol>
+  </div>
+  <div class="rl__row rl__row--after">
+    <p class="rl__head"><span class="label">Depois</span><span class="rl__time signal">minutos</span></p>
+    <ol class="rl__track rl__track--auto">
+      {auto.map((s) => <li>{s}</li>)}
+    </ol>
+  </div>
+  <figcaption class="label">Esquemático · etapas simplificadas</figcaption>
+</figure>
+
+<style>
+  .rl {
+    display: grid;
+    gap: 22px;
+  }
+
+  .rl__row {
+    display: grid;
+    gap: 10px;
+  }
+
+  .rl__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .rl__time {
+    font-size: var(--step-1);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+
+  .rl__track {
+    display: grid;
+    gap: 4px;
+    font-size: 0.85rem;
+  }
+
+  .rl__track--manual {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .rl__track--manual li {
+    padding: 14px 12px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    color: var(--ink-2);
+  }
+
+  .rl__track--auto {
+    position: relative;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    width: 46%;
+    min-width: 280px;
+  }
+
+  .rl__track--auto li {
+    padding: 14px 12px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .rl__track--auto li:nth-child(2) {
+    position: relative;
+    overflow: hidden;
+    background: var(--signal);
+    color: var(--on-signal);
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .rl__track--auto li:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.35), transparent);
+    transform: translateX(-100%);
+    animation: sweep 2.2s var(--ease-in-out) infinite;
+  }
+
+  @keyframes sweep {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .rl__track--manual {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .rl__track--auto {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+</style>

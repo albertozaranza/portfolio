@@ -1,58 +1,24 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Impact from "../components/Impact.astro";
+import Work from "../components/Work.astro";
+import Approach from "../components/Approach.astro";
+import Experience from "../components/Experience.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
 ---
 
-<BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5">
-    <div class="text-xl py-1">Hey, there 👋</div>
-    <div class="text-5xl font-bold">I'm Alberto Zaranza</div>
-    <div class="py-3">
-      <div class="text-3xl font-bold">Software Engineer 🧑‍💻</div>
-      <div class="text-xl font-bold">React, React Native and Node ⚛</div>
-    </div>
-    <div class="py-2">
-      <text class="text-lg">
-        As a Software Engineer, I specialize in React, React Native and Node,
-        technologies that enables me to create high-quality applications for
-        different platforms. I am passionate about creating solutions that make
-        a positive impact on people's lives and the environment.
-      </text>
-    </div>
-    <div class="mt-8">
-      <a
-        class="btn btn-outline"
-        href="https://www.linkedin.com/in/albertozaranza/"
-        target="_blank"
-      >
-        Let's connect!</a
-      >
-    </div>
-  </div>
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-2">⌛ My last projects</div>
-  </div>
-
-  <HorizontalCard
-    title="ContactApp 📱"
-    img="/portfolio/contact-app.webp"
-    desc="ContactApp is a mobile application that allows users to manage their contacts. The app is built with React Native and uses Firebase as a backend. It has features like adding and chat with contacts, as well as searching for contacts."
-    url="https://github.com/albertozaranza/contact-app-expo"
-    badge="NEW"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Coding Aracati 💻"
-    img="/portfolio/coding-aracati.webp"
-    desc="Coding Aracati community is a close-knit group of technology enthusiasts committed to learning, collaborating, and innovating. Made up of programmers from all areas, the group holds workshops and educational events to share knowledge and promote continuous learning."
-    url="https://codingaracati.github.io/landing-page"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="My Portfolio 🤓"
-    img="/portfolio/post_img.webp"
-    desc="Welcome to my programming portfolio! Browse through my projects and discover my talent and experience in software development. I hope you find something inspiring!"
-    url="#"
-  />
+<BaseLayout>
+  <Header />
+  <main id="main">
+    <Hero />
+    <Impact />
+    <Work />
+    <Approach />
+    <Experience />
+    <About />
+  </main>
+  <Contact />
 </BaseLayout>

@@ -1,0 +1,142 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import CaseStudy, { type CaseLayout } from "./CaseStudy.astro";
+import ReviewDiagram from "./diagrams/ReviewDiagram.astro";
+import SchedulingDiagram from "./diagrams/SchedulingDiagram.astro";
+import SuperappDiagram from "./diagrams/SuperappDiagram.astro";
+import ReleaseDiagram from "./diagrams/ReleaseDiagram.astro";
+import { cases, sideProjects, type Diagram } from "../data/profile";
+
+const layouts: CaseLayout[] = ["feature", "wide", "inverse", "split"];
+const diagrams: Record<Diagram, typeof ReviewDiagram> = {
+  "ab-review": ReviewDiagram,
+  scheduling: SchedulingDiagram,
+  superapp: SuperappDiagram,
+  release: ReleaseDiagram,
+};
+---
+
+<section class="work" id="work" aria-labelledby="work-title">
+  <div class="container">
+    <SectionHeader index="02" eyebrow="Trabalhos" id="work-title">
+      Histórias de engenharia, <span class="serif">do problema à prova.</span>
+      <p slot="intro">
+        Cada case segue o mesmo caminho: o contexto, o problema, as decisões que tomei e o que mudou
+        depois que foi para produção.
+      </p>
+    </SectionHeader>
+
+    <div class="work__cases">
+      {
+        cases.map((c, i) => {
+          const Visual = diagrams[c.diagram];
+          return (
+            <CaseStudy data={c} index={i} layout={layouts[i % layouts.length]}>
+              <Visual />
+            </CaseStudy>
+          );
+        })
+      }
+    </div>
+
+    <aside class="side" aria-labelledby="side-title">
+      <h3 id="side-title" class="label">Também construí</h3>
+      <ul>
+        {
+          sideProjects.map((p) => (
+            <li>
+              <a href={p.href} target="_blank" rel="noopener noreferrer" class="side__link">
+                <span class="side__name">{p.label}</span>
+                <span class="side__desc">{p.description}</span>
+                <span class="label">{p.stack}</span>
+                <span class="side__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .work {
+    padding-bottom: var(--section-y);
+  }
+
+  .side {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(12px, 2vw, 32px);
+    padding-top: clamp(40px, 6vw, 72px);
+    border-top: 1px solid var(--line);
+  }
+
+  .side h3 {
+    grid-column: 1 / span 3;
+    padding-top: 22px;
+  }
+
+  .side ul {
+    grid-column: 4 / span 9;
+  }
+
+  .side li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .side__link {
+    display: grid;
+    grid-template-columns: 1.1fr 1.6fr 0.8fr auto;
+    align-items: baseline;
+    gap: 16px;
+    padding: 20px 0;
+    transition: padding 0.5s var(--ease-out), color 0.3s;
+  }
+
+  .side__name {
+    font-size: var(--step-2);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+
+  .side__desc {
+    color: var(--ink-2);
+  }
+
+  .side__arrow {
+    font-size: 1.2rem;
+    transition: transform 0.5s var(--ease-out), color 0.3s;
+  }
+
+  .side__link:hover {
+    padding-left: 12px;
+  }
+
+  .side__link:hover .side__arrow {
+    transform: translate(4px, -4px);
+    color: var(--signal);
+  }
+
+  @media (max-width: 899px) {
+    .side h3,
+    .side ul {
+      grid-column: 1 / -1;
+    }
+
+    .side__link {
+      grid-template-columns: 1fr auto;
+      gap: 4px 16px;
+    }
+
+    .side__desc,
+    .side__link .label {
+      grid-column: 1;
+    }
+
+    .side__arrow {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+</style>

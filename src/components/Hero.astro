@@ -1,0 +1,358 @@
+---
+import { Image } from "astro:assets";
+import portrait from "../assets/profile.webp";
+import { experience, identity } from "../data/profile";
+
+const companies = experience.map((r) => r.company);
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="hero__meta grid-12" data-reveal>
+      <p class="meta meta--role">
+        <span class="label">Cargo</span>
+        <span>{identity.role}</span>
+      </p>
+      <p class="meta meta--stack">
+        <span class="label">Foco</span>
+        <span>React Native · iOS · Android</span>
+      </p>
+      <p class="meta meta--loc">
+        <span class="label">Baseado no</span>
+        <span>{identity.location} · {identity.timezoneLabel}</span>
+      </p>
+      <p class="meta meta--status">
+        <span class="label">Status</span>
+        <span class="status"><span class="status__dot" aria-hidden="true"></span>{identity.availability}</span>
+      </p>
+    </div>
+
+    <h1 class="hero__name" id="hero-title" data-reveal-group>
+      <span class="mask" style="--d:1">
+        <span class="hero__line">
+          {identity.firstName}
+          <span class="portrait" aria-hidden="true">
+            <span class="portrait__inner" data-parallax="14">
+              <Image
+                src={portrait}
+                alt=""
+                width={640}
+                widths={[240, 400, 640]}
+                sizes="(max-width: 600px) 160px, 400px"
+                loading="eager"
+                fetchpriority="high"
+                class="portrait__img"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span class="mask" style="--d:2">
+        <span class="hero__line hero__line--indent">
+          <span class="hero__glyph serif" aria-hidden="true">&mdash;</span>{identity.lastName}
+        </span>
+      </span>
+      <span class="sr-only">, {identity.role}</span>
+    </h1>
+
+    <div class="hero__body grid-12">
+      <p class="hero__tagline" data-reveal style="--d:3">
+        Construindo experiências mobile <span class="serif signal">escaláveis.</span>
+      </p>
+      <div class="hero__intro" data-reveal style="--d:4">
+        <p>{identity.summary}</p>
+        <div class="hero__ctas">
+          <a class="btn" href="#work">
+            Ver trabalhos
+            <svg class="arrow arrow--down" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+              <path d="M7 1v12M1.5 7.5 7 13l5.5-5.5" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+            </svg>
+          </a>
+          <a class="btn btn--ghost" href="#contact">Entrar em contato</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__foot" data-reveal style="--d:5">
+      <span class="label">Experiência em</span>
+      <ul class="hero__companies">
+        {companies.map((c) => <li>{c}</li>)}
+      </ul>
+      <a class="hero__scroll label" href="#impact" aria-label="Rolar até Impacto">
+        Rolar <span class="hero__scroll-line" aria-hidden="true"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(104px, 14vh, 150px);
+    padding-bottom: clamp(32px, 5vh, 56px);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero > .container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero__meta {
+    row-gap: 18px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .meta {
+    display: grid;
+    gap: 4px;
+    grid-column: span 3;
+    font-size: 0.92rem;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .status__dot {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 0 0 var(--signal);
+    animation: ring 2.6s var(--ease-out) infinite;
+    transform: translateY(-1px);
+  }
+
+  @keyframes ring {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--signal) 60%, transparent);
+    }
+    80%,
+    100% {
+      box-shadow: 0 0 0 9px transparent;
+    }
+  }
+
+  /* Name ------------------------------------------------------------------ */
+  .hero__name {
+    margin-top: clamp(28px, 6vh, 72px);
+    font-size: clamp(3.4rem, min(15.2vw, 25svh), 13.5rem);
+    font-weight: 500;
+    line-height: 0.86;
+    letter-spacing: -0.06em;
+  }
+
+  .hero__line {
+    display: flex;
+    align-items: center;
+    gap: 0.12em;
+    white-space: nowrap;
+  }
+
+  .hero__line--indent {
+    justify-content: flex-end;
+  }
+
+  .hero__glyph {
+    display: inline-block;
+    margin-right: 0.08em;
+    color: var(--signal);
+    font-size: 0.7em;
+    letter-spacing: 0;
+    transform: translateY(-0.04em);
+  }
+
+  .portrait {
+    display: inline-block;
+    flex: none;
+    width: 1.55em;
+    height: 0.74em;
+    margin-left: 0.08em;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--paper-2);
+    transform: translateY(0.02em);
+    transition: width 0.9s var(--ease-out);
+  }
+
+  .hero__name:hover .portrait {
+    width: 1.8em;
+  }
+
+  .portrait__inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(var(--px, 0), var(--py, 0), 0) scale(1.15);
+    transition: transform 0.8s var(--ease-out);
+  }
+
+  .portrait__inner :global(.portrait__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 34%;
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.9s var(--ease-out);
+  }
+
+  .hero__name:hover .portrait__inner :global(.portrait__img) {
+    filter: none;
+  }
+
+  /* Body ------------------------------------------------------------------ */
+  .hero__body {
+    margin-top: clamp(40px, 7vh, 88px);
+    row-gap: 28px;
+    align-items: start;
+  }
+
+  .hero__tagline {
+    grid-column: 1 / span 6;
+    font-size: var(--step-3);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    max-width: 12ch;
+  }
+
+  .hero__tagline .serif {
+    font-size: 1.08em;
+  }
+
+  .hero__intro {
+    grid-column: 8 / span 5;
+    display: grid;
+    gap: 28px;
+    color: var(--ink-2);
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Foot ------------------------------------------------------------------ */
+  .hero__foot {
+    margin-top: auto;
+    padding-top: clamp(48px, 8vh, 96px);
+    display: flex;
+    align-items: center;
+    gap: 20px 28px;
+    flex-wrap: wrap;
+  }
+
+  .hero__companies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+  }
+
+  .hero__companies li + li::before {
+    content: "/";
+    margin-right: 11px;
+    margin-left: -11px;
+    color: var(--ink-3);
+  }
+
+  .hero__scroll {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink-2);
+  }
+
+  .hero__scroll-line {
+    position: relative;
+    width: 40px;
+    height: 1px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .hero__scroll-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    animation: scan 2.4s var(--ease-in-out) infinite;
+  }
+
+  @keyframes scan {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .meta {
+      grid-column: span 6;
+    }
+
+    .hero__tagline {
+      grid-column: 1 / -1;
+    }
+
+    .hero__intro {
+      grid-column: 1 / span 10;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .hero {
+      min-height: auto;
+    }
+
+    .hero__meta {
+      row-gap: 14px;
+    }
+
+    .meta--stack {
+      display: none;
+    }
+
+    .meta--status {
+      grid-column: 1 / -1;
+    }
+
+    .hero__name {
+      line-height: 0.92;
+    }
+
+    .hero__line {
+      flex-wrap: nowrap;
+    }
+
+    .hero__line--indent {
+      padding-left: 0;
+    }
+
+    .hero__intro {
+      grid-column: 1 / -1;
+    }
+
+    .hero__ctas .btn {
+      flex: 1 1 auto;
+      justify-content: center;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+</style>

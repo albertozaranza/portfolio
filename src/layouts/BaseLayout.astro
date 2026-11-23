@@ -1,47 +1,100 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import SideBar from "../components/SideBar.astro";
-import { ViewTransitions } from "astro:transitions";
+import { getImage } from "astro:assets";
+import "../styles/global.css";
+import portrait from "../assets/profile.webp";
+import { identity, socials } from "../data/profile";
 
-import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
 
 const {
-  image,
-  title = SITE_TITLE,
-  description = SITE_DESCRIPTION,
-  includeSidebar = true,
-  sideBarActiveItemID,
-  ogType,
+  title = `${identity.name} · ${identity.role}`,
+  description = `${identity.role} com mais de ${identity.years.replace("+", "")} anos construindo produtos em React Native para milhões de usuários. Arquitetura, performance, integrações nativas e entrega contínua, com resultados medidos.`,
+  noindex = false,
 } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = await getImage({ src: portrait, width: 1200, height: 1200, format: "jpg", quality: 80 });
+const ogImageUrl = new URL(ogImage.src, Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: identity.name,
+  jobTitle: identity.role,
+  description,
+  url: canonical.href,
+  image: ogImageUrl.href,
+  email: `mailto:${identity.email}`,
+  address: { "@type": "PostalAddress", addressCountry: "BR" },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Instituto Federal do Ceará (IFCE)" },
+  knowsAbout: ["React Native", "TypeScript", "Arquitetura mobile", "Performance", "iOS", "Android"],
+  sameAs: [socials.linkedin.href, socials.github.href],
+};
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dracula">
+<html lang="pt-BR">
   <head>
-    <BaseHead
-      title={title}
-      description={description}
-      image={image}
-      ,
-      ogType={ogType}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="author" content={identity.name} />
+    <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f0f0e" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={identity.name} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:image:alt" content={`Retrato de ${identity.name}`} />
+    <meta property="profile:first_name" content={identity.firstName} />
+    <meta property="profile:last_name" content={identity.lastName} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
     />
-    {TRANSITION_API && <ViewTransitions />}
+
+    <script is:inline>
+      // Runs before paint: apply the stored theme and flag JS so reveal styles only apply when they can resolve.
+      (function () {
+        var root = document.documentElement;
+        root.classList.add("js");
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "light" || t === "dark") root.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
-    <div class="bg-base-100 drawer lg:drawer-open">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content bg-base-100">
-        <Header title={SITE_TITLE} />
-        <div class="md:flex md:justify-center">
-          <main class="p-6 pt-10 lg:max-w-[900px] max-w-[100vw]">
-            <slot />
-          </main>
-        </div>
-        <Footer />
-      </div>
-      {includeSidebar && <SideBar sideBarActiveItemID={sideBarActiveItemID} />}
-    </div>
+    <a class="skip-link" href="#main">Pular para o conteúdo</a>
+    <slot />
+    <script>
+      import { initMotion } from "../scripts/motion";
+      initMotion();
+    </script>
   </body>
 </html>

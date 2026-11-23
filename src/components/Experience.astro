@@ -1,0 +1,182 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import { education, experience } from "../data/profile";
+
+const year = (s: string) => s.match(/\d{4}/)?.[0] ?? s;
+---
+
+<section class="exp" id="experience" aria-labelledby="exp-title">
+  <div class="container">
+    <SectionHeader index="04" eyebrow="Experiência" id="exp-title">
+      De mapas para políticas públicas <span class="serif">a produtos em escala.</span>
+    </SectionHeader>
+
+    <ol class="timeline">
+      {
+        experience.map((r, i) => (
+          <li class="job" data-reveal style={`--d:${i % 2}`}>
+            <p class="job__when">
+              <span class="job__years">
+                {year(r.start)}
+                <span aria-hidden="true">—</span>
+                {r.current ? <span class="signal">Hoje</span> : year(r.end)}
+              </span>
+              <span class="label">
+                {r.start} – {r.end}
+              </span>
+            </p>
+            <div class="job__who">
+              <h3 class="job__company">{r.company}</h3>
+              <p class="job__role">{r.role}</p>
+              <p class="label">{r.domain}</p>
+            </div>
+            <div class="job__what">
+              <p class="job__summary">{r.summary}</p>
+              <ul class="job__list">
+                {r.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+      <li class="job job--edu" data-reveal>
+        <p class="job__when">
+          <span class="job__years">{education.period.replace(" — ", "—")}</span>
+          <span class="label">Formação</span>
+        </p>
+        <div class="job__who">
+          <h3 class="job__company">{education.degree}</h3>
+          <p class="job__role">{education.school}</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .exp {
+    padding-block: var(--section-y);
+  }
+
+  .timeline {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .job {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(12px, 2vw, 32px);
+    row-gap: 18px;
+    padding-block: clamp(28px, 4vw, 48px);
+    border-top: 1px solid var(--line);
+  }
+
+  .job::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.9s var(--ease-out);
+  }
+
+  .job:hover::before {
+    transform: scaleX(1);
+  }
+
+  .job__when {
+    grid-column: 1 / span 3;
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  .job__years {
+    display: inline-flex;
+    gap: 0.3em;
+    font-size: var(--step-1);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .job__who {
+    grid-column: 4 / span 4;
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  .job__company {
+    font-size: var(--step-3);
+    letter-spacing: -0.05em;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .job:hover .job__company {
+    transform: translateX(8px);
+  }
+
+  .job__role {
+    font-size: 1.02rem;
+  }
+
+  .job__what {
+    grid-column: 8 / span 5;
+    display: grid;
+    gap: 12px;
+  }
+
+  .job__summary {
+    font-size: var(--step-1);
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+  }
+
+  .job__list {
+    display: grid;
+    gap: 8px;
+    color: var(--ink-2);
+    font-size: 0.97rem;
+  }
+
+  .job__list li {
+    display: grid;
+    grid-template-columns: 1.2em 1fr;
+  }
+
+  .job__list li::before {
+    content: "–";
+    color: var(--ink-3);
+  }
+
+  .job--edu .job__company {
+    font-size: var(--step-2);
+  }
+
+  .job--edu .job__who {
+    grid-column: 4 / span 9;
+  }
+
+  @media (max-width: 899px) {
+    .job__when,
+    .job__who,
+    .job__what,
+    .job--edu .job__who {
+      grid-column: 1 / -1;
+    }
+
+    .job__when {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+  }
+</style>

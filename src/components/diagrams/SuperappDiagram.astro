@@ -1,0 +1,159 @@
+---
+const modules = [
+  { name: "Serviços de saúde", note: "centralizados" },
+  { name: "Notificações", note: "OneSignal" },
+  { name: "Gamificação", note: "↔ dispositivos IoT" },
+  { name: "Gestão de arquivos", note: "otimizada" },
+];
+---
+
+<figure class="ad" role="img" aria-label="Arquitetura esquemática: um shell de superapp hospeda serviços de saúde, notificações, gamificação conectada a IoT e gestão de arquivos, sobre a Nova Arquitetura do React Native, com atualizações over-the-air.">
+  <div class="ad__ota">
+    <span class="label">Atualizações OTA</span>
+    <span>CodePush · hot-updater</span>
+    <span class="ad__ota-line" aria-hidden="true"></span>
+  </div>
+
+  <div class="ad__shell">
+    <p class="ad__shell-name">Shell do superapp</p>
+    <ul class="ad__modules">
+      {
+        modules.map((m, i) => (
+          <li style={`--i:${i}`}>
+            <span>{m.name}</span>
+            <span class="label">{m.note}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="ad__layer">
+    <span>Fabric</span>
+    <span>TurboModules</span>
+    <span>JSI</span>
+  </div>
+  <div class="ad__native">
+    <span>iOS</span>
+    <span>Android</span>
+  </div>
+  <figcaption class="label ad__cap">Esquemático · simplificado</figcaption>
+</figure>
+
+<style>
+  .ad {
+    --ad-line: rgb(255 255 255 / 0.18);
+    display: grid;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+
+  .ad .label {
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  .ad__ota {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px dashed var(--ad-line);
+  }
+
+  .ad__ota-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--signal) 0 40%, transparent 40%) 0 0 / 14px 1px repeat-x;
+    animation: flow 1.2s linear infinite;
+  }
+
+  @keyframes flow {
+    to {
+      background-position: 14px 0;
+    }
+  }
+
+  .ad__shell {
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--ad-line);
+  }
+
+  .ad__shell-name {
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .ad__modules {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ad__modules li {
+    display: grid;
+    gap: 2px;
+    padding: 14px;
+    border-radius: 10px;
+    background: rgb(255 255 255 / 0.06);
+    transition:
+      opacity 0.6s var(--ease-out),
+      transform 0.8s var(--ease-out),
+      background-color 0.3s;
+    transition-delay: calc(var(--i) * 80ms + 250ms), calc(var(--i) * 80ms + 250ms), 0s;
+  }
+
+  .ad__modules li:hover {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  :global(.js) :global(.case:not(.is-in)) .ad__modules li {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .ad__layer,
+  .ad__native {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .ad__native {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ad__layer span,
+  .ad__native span {
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .ad__layer span {
+    background: var(--signal);
+    color: #121212;
+    font-weight: 500;
+  }
+
+  .ad__native span {
+    border: 1px solid var(--ad-line);
+  }
+
+  .ad__cap {
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  @media (max-width: 480px) {
+    .ad__modules {
+      grid-template-columns: 1fr;
+    }
+
+    .ad__ota {
+      flex-wrap: wrap;
+    }
+  }
+</style>
